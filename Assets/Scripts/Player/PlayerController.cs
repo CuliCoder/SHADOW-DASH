@@ -4,7 +4,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private EnvironmentSO environment;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private float doubleJumpForce = 12f;
-    [SerializeField] public float runSpeed = 7f;
     [SerializeField] private float JUMP_BUFFER = 0.5f;
     [SerializeField] private float SLIDE_BUFFER = 0.1f;
     [SerializeField] private Vector2 runSize;

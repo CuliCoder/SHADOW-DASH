@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravityScale: 3.5
   airResistance: 0
+  posXSpawnObstacle: 34
+  speedWorld: 15

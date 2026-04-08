@@ -27,7 +27,7 @@ public class ParallaxController : MonoBehaviour
             backgrounds[i] = transform.GetChild(i).gameObject;
             mat[i] = backgrounds[i].GetComponent<Renderer>().material;
         }
-        scrollX = playerController.runSpeed * Time.deltaTime;
+        scrollX = EnvironmentManager.Instance.environmentSO.speedWorld * Time.deltaTime;
         BackSpeedCalculate(backCount);
     }
 
@@ -54,6 +54,6 @@ public class ParallaxController : MonoBehaviour
             float speed = backSpeed[i] * parallaxSpeed;
             mat[i].SetTextureOffset("_MainTex", new Vector2(scrollX * speed, 0));
         }
-        scrollX += playerController.runSpeed * Time.deltaTime;
+        scrollX += EnvironmentManager.Instance.environmentSO.speedWorld * Time.deltaTime;
     }
 }
