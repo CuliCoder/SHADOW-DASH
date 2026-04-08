@@ -4,19 +4,41 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private EnvironmentSO environment;
     [SerializeField] private float jumpForce = 15f;
     [SerializeField] private float doubleJumpForce = 12f;
-    [SerializeField] private float runSpeed = 7f;
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] public float runSpeed = 7f;
     [SerializeField] private float JUMP_BUFFER = 0.5f;
+    [SerializeField] private float SLIDE_BUFFER = 0.1f;
+    [SerializeField] private Vector2 runSize;
+    [SerializeField] private Vector2 slideSize;
+    [SerializeField] private float slideTime = 0.6f;
+    public Rigidbody2D rb { get; private set; }
+    public BoxCollider2D col { get; private set; }
     private int jumpCount = 0;
-    private bool isJumpInput = false;
-    private bool isGrounded = true;
-    private bool canJump = false;
+    public bool isGrounded { get; private set; } = true;
     private float jumpBufferCounter = 0f;
     private float coyoteTimeCounter = 0f;
-
+    private float slideBufferCounter = 0f;
+    private float slideCounter = 0f;
+    public bool isSliding { get; private set; } = false;
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
+    }
+    private void Start()
+    {
+        col.size = runSize;
+    }
     private void FixedUpdate()
     {
         ApplyBetterHall();
+        slide();
+    }
+    private void ApplySlide()
+    {
+        if (InputManager.Instance.IsSlidePressed() && isGrounded)
+        {
+            startSlide();
+        }
     }
     private void ApplyBetterHall()
     {
@@ -26,6 +48,8 @@ public class PlayerController : MonoBehaviour
     {
         ApplyJump();
         jumpBuffer();
+        ApplySlide();
+        slideBuffer();
     }
     private void ApplyJump()
     {
@@ -35,6 +59,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
+        if (isSliding) return;
         jumpCount++;
         if (isGrounded)
         {
@@ -67,5 +92,40 @@ public class PlayerController : MonoBehaviour
             Jump();
             jumpBufferCounter = 0f;
         }
+    }
+    private void slideBuffer()
+    {
+        if (InputManager.Instance.IsSlidePressed())
+        {
+            slideBufferCounter = SLIDE_BUFFER;
+        }
+        else
+        {
+            slideBufferCounter -= Time.deltaTime;
+        }
+        if (slideBufferCounter > 0f && isGrounded)
+        {
+            startSlide();
+            slideBufferCounter = 0f;
+        }
+    }
+    private void slide()
+    {
+        if (isSliding)
+        {
+            slideCounter -= Time.fixedDeltaTime;
+            col.size = slideSize;
+        }
+        if (slideCounter <= 0f)
+        {
+            isSliding = false;
+            col.size = runSize;
+        }
+    }
+    private void startSlide()
+    {
+        if(isSliding) return;
+        isSliding = true;
+        slideCounter = slideTime;
     }
 }

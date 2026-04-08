@@ -20,8 +20,8 @@ public class InputManager : MonoBehaviour
         return Input.GetButtonDown("Jump");
     }
 
-    public bool IsFirePressed()
+    public bool IsSlidePressed()
     {
-        return Input.GetButtonDown("Fire1");
+        return Input.GetButtonDown("Slide");
     }
 }
