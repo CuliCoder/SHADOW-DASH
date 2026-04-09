@@ -232,7 +232,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.2, y: 11.4, z: 21.474295}
-  m_LocalScale: {x: 6.363727, y: 4.183125, z: 1}
+  m_LocalScale: {x: 6.363727, y: 3.6772282, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1254975023}
@@ -286,9 +286,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentSO: {fileID: 11400000, guid: 81e2a273964963448b618750d3300ae0, type: 2}
+  playerController: {fileID: 1375394053}
   obstaclePoolEntries:
   - obstacleBaseSO: {fileID: 11400000, guid: 3ac35b6798f93a145a54e4c6647d5a04, type: 2}
     poolSize: 10
+  - obstacleBaseSO: {fileID: 11400000, guid: b972d1b2e0305f94f84f39600135e4d5, type: 2}
+    poolSize: 5
+  - obstacleBaseSO: {fileID: 11400000, guid: e08a4c38286ce03428daa4cf2dcafec2, type: 2}
+    poolSize: 5
+  - obstacleBaseSO: {fileID: 11400000, guid: 41a046fc1685b504689a2ec7508be273, type: 2}
+    poolSize: 5
+  - obstacleBaseSO: {fileID: 11400000, guid: f25c9599c598b3048a25cb174b1f301d, type: 2}
+    poolSize: 5
   spawnInterval: 2
 --- !u!4 &513067512
 Transform:
@@ -521,8 +530,8 @@ Transform:
   m_GameObject: {fileID: 835298136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -22.2, z: 0}
-  m_LocalScale: {x: 112.10193, y: 14.4897, z: 1}
+  m_LocalPosition: {x: 0.5, y: -22, z: 0}
+  m_LocalScale: {x: 112.10193, y: 18.655489, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -997,7 +1006,7 @@ Transform:
   m_GameObject: {fileID: 1375394048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -22.4, y: -11.7, z: 0}
+  m_LocalPosition: {x: -14.2, y: -9.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1060,14 +1069,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d029fe229b536724d876366ef9a4ab8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  environment: {fileID: 11400000, guid: 81e2a273964963448b618750d3300ae0, type: 2}
-  jumpForce: 20
-  doubleJumpForce: 17
-  JUMP_BUFFER: 0.1
-  SLIDE_BUFFER: 0.1
-  runSize: {x: 3.653826, y: 4.749633}
-  slideSize: {x: 3.932135, y: 3.755673}
-  slideTime: 0.6
+  stateInfo:
+    jumpForce: 23
+    doubleJumpForce: 17
+    JUMP_BUFFER: 0
+    SLIDE_BUFFER: 0
+    runSize: {x: 0, y: 0}
+    slideSize: {x: 0, y: 0}
+    slideTime: 0
+    jumpCount: 0
+    isGrounded: 0
+    jumpBufferCounter: 0
+    coyoteTimeCounter: 0
+    slideBufferCounter: 0
+    slideCounter: 0
+    isSliding: 0
+    canDoubleJump: 0
 --- !u!114 &1375394054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,7 +1146,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: -2.1276166, z: -22.02}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1.1269844}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 228185003}

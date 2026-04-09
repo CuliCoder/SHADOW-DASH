@@ -11,11 +11,11 @@ public class PlayerRunState : PlayerState
     }
     public override void Update()
     {
-        if (!stateManager.playerController.isGrounded)
+        if (!stateManager.playerController.stateInfo.isGrounded)
         {
             stateManager.changeState(stateManager.jumpState);
         }
-        else if (stateManager.playerController.isSliding)
+        else if (stateManager.playerController.stateInfo.isSliding)
         {
             stateManager.changeState(stateManager.slideState);
         }

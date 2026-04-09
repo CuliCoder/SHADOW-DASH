@@ -1,4 +1,4 @@
-public class Coin : ObstacleBase
+public class Bat : ObstacleBase
 {
     public override void HandleCollision()
     {

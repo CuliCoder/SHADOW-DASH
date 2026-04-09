@@ -1,4 +1,4 @@
-public class Coin : ObstacleBase
+public class Spike : ObstacleBase
 {
     public override void HandleCollision()
     {

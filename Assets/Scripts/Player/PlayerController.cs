@@ -1,31 +1,14 @@
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private EnvironmentSO environment;
-    [SerializeField] private float jumpForce = 15f;
-    [SerializeField] private float doubleJumpForce = 12f;
-    [SerializeField] private float JUMP_BUFFER = 0.5f;
-    [SerializeField] private float SLIDE_BUFFER = 0.1f;
-    [SerializeField] private Vector2 runSize;
-    [SerializeField] private Vector2 slideSize;
-    [SerializeField] private float slideTime = 0.6f;
-    public Rigidbody2D rb { get; private set; }
-    public BoxCollider2D col { get; private set; }
-    private int jumpCount = 0;
-    public bool isGrounded { get; private set; } = true;
-    private float jumpBufferCounter = 0f;
-    private float coyoteTimeCounter = 0f;
-    private float slideBufferCounter = 0f;
-    private float slideCounter = 0f;
-    public bool isSliding { get; private set; } = false;
+    public PlayerStateInfo stateInfo;
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<BoxCollider2D>();
+        stateInfo = new PlayerStateInfo(GetComponent<Rigidbody2D>(), GetComponent<BoxCollider2D>());
     }
     private void Start()
     {
-        col.size = runSize;
+        stateInfo.col.size = stateInfo.runSize;
     }
     private void FixedUpdate()
     {
@@ -34,14 +17,14 @@ public class PlayerController : MonoBehaviour
     }
     private void ApplySlide()
     {
-        if (InputManager.Instance.IsSlidePressed() && isGrounded)
+        if (InputManager.Instance.IsSlidePressed() && stateInfo.isGrounded)
         {
             startSlide();
         }
     }
     private void ApplyBetterHall()
     {
-        rb.velocity += Vector2.up * Physics2D.gravity.y * environment.gravityScale * Time.fixedDeltaTime;
+        stateInfo.rb.velocity += Vector2.up * Physics2D.gravity.y * EnvironmentManager.Instance.environmentSO.gravityScale * Time.fixedDeltaTime;
     }
     private void Update()
     {
@@ -53,78 +36,83 @@ public class PlayerController : MonoBehaviour
     private void ApplyJump()
     {
         if (!InputManager.Instance.IsJumpPressed()) return;
-        if (jumpCount >= 2) return;
+        if (stateInfo.jumpCount >= 2) return;
         Jump();
     }
     private void Jump()
     {
-        if (isSliding) return;
-        jumpCount++;
-        if (isGrounded)
+        if (stateInfo.isSliding) return;
+        stateInfo.jumpCount++;
+        if (stateInfo.jumpCount >= 2)
         {
-            isGrounded = false;
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            stateInfo.canDoubleJump = false;
+        }
+        if (stateInfo.isGrounded)
+        {
+            stateInfo.isGrounded = false;
+            stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.jumpForce);
             return;
         }
-        rb.velocity = new Vector2(rb.velocity.x, doubleJumpForce);
+        stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.doubleJumpForce);
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "ground")
         {
-            isGrounded = true;
-            jumpCount = 0;
+            stateInfo.isGrounded = true;
+            stateInfo.jumpCount = 0;
+            stateInfo.canDoubleJump = true;
         }
     }
     private void jumpBuffer()
     {
         if (InputManager.Instance.IsJumpPressed())
         {
-            jumpBufferCounter = JUMP_BUFFER;
+            stateInfo.jumpBufferCounter = stateInfo.JUMP_BUFFER;
         }
         else
         {
-            jumpBufferCounter -= Time.deltaTime;
+            stateInfo.jumpBufferCounter -= Time.deltaTime;
         }
-        if (jumpBufferCounter > 0f && isGrounded)
+        if (stateInfo.jumpBufferCounter > 0f && stateInfo.isGrounded)
         {
             Jump();
-            jumpBufferCounter = 0f;
+            stateInfo.jumpBufferCounter = 0f;
         }
     }
     private void slideBuffer()
     {
         if (InputManager.Instance.IsSlidePressed())
         {
-            slideBufferCounter = SLIDE_BUFFER;
+            stateInfo.slideBufferCounter = stateInfo.SLIDE_BUFFER;
         }
         else
         {
-            slideBufferCounter -= Time.deltaTime;
+            stateInfo.slideBufferCounter -= Time.deltaTime;
         }
-        if (slideBufferCounter > 0f && isGrounded)
+        if (stateInfo.slideBufferCounter > 0f && stateInfo.isGrounded)
         {
             startSlide();
-            slideBufferCounter = 0f;
+            stateInfo.slideBufferCounter = 0f;
         }
     }
     private void slide()
     {
-        if (isSliding)
+        if (stateInfo.isSliding)
         {
-            slideCounter -= Time.fixedDeltaTime;
-            col.size = slideSize;
+            stateInfo.slideCounter -= Time.fixedDeltaTime;
+            stateInfo.col.size = stateInfo.slideSize;
         }
-        if (slideCounter <= 0f)
+        if (stateInfo.slideCounter <= 0f)
         {
-            isSliding = false;
-            col.size = runSize;
+            stateInfo.isSliding = false;
+            stateInfo.col.size = stateInfo.runSize;
         }
     }
     private void startSlide()
     {
-        if(isSliding) return;
-        isSliding = true;
-        slideCounter = slideTime;
+        if (stateInfo.isSliding) return;
+        stateInfo.isSliding = true;
+        stateInfo.slideCounter = stateInfo.slideTime;
     }
 }

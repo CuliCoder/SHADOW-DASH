@@ -11,15 +11,15 @@ public class PlayerJumpState : PlayerState
     }
     public override void Update()
     {
-        if (stateManager.playerController.rb.velocity.y > 0)
+        if (stateManager.playerController.stateInfo.rb.velocity.y > 0)
         {
             playAnimation("jump_start");
         }
-        if (stateManager.playerController.rb.velocity.y < 0)
+        if (stateManager.playerController.stateInfo.rb.velocity.y < 0)
         {
             playAnimation("jump_end");
         }
-        if (stateManager.playerController.isGrounded)
+        if (stateManager.playerController.stateInfo.isGrounded)
         {
             stateManager.changeState(stateManager.runState);
         }

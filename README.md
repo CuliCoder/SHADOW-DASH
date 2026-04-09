@@ -231,7 +231,7 @@ public class PlayabilityChecker : MonoBehaviour
     private bool CanJumpOverOrRunUnder(float timeToReach, PlayerStateInfo state, ObstacleType type)
     {
         float playerH = SimulateBestJump(timeToReach, state);
-        bool  canOver  = playerH > GetTop(type);
+        bool  canOver  = playerH >  (type);
         bool  canUnder = GetBottom(type) > PlayerStandHeight;
         return canOver || canUnder;
     }

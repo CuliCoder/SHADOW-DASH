@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class ObstacleBase : MonoBehaviour
 {
-    [SerializeField] protected ObstacleBaseSO obstacleBaseSO;
+    [SerializeField] public ObstacleBaseSO obstacleBaseSO;
     private void Awake()
     {
     }

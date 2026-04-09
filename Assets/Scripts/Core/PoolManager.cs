@@ -31,7 +31,7 @@ public class PoolManager : MonoBehaviour
             poolDictionary.Add(key, objectPool);
         }
     }
-    public GameObject SpawnPool(string key, Vector2 pos, Quaternion rot)
+    public GameObject SpawnPool(string key, float posX, Quaternion rot)
     {
         if (!poolDictionary.ContainsKey(key))
         {
@@ -45,6 +45,7 @@ public class PoolManager : MonoBehaviour
             return null;
         }
         GameObject objtoSpawn = pools.Dequeue();
+        Vector2 pos = new Vector2(posX, objtoSpawn.transform.position.y);
         objtoSpawn.transform.SetPositionAndRotation(pos, rot);
         objtoSpawn.SetActive(true);
         return objtoSpawn;
@@ -57,7 +58,6 @@ public class PoolManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        gameObject.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);
         gameObject.SetActive(false);
         poolDictionary[key].Enqueue(gameObject);
     }
