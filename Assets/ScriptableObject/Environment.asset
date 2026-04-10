@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e55bc1d85533504591e271320358472, type: 3}
   m_Name: Environment
   m_EditorClassIdentifier: 
-  gravityScale: 3.5
+  gravityScale: 4.5
   airResistance: 0
   posXSpawnObstacle: 34
   speedWorld: 15
+  rampDuration: 180
+  maxSpeedWorld: 30

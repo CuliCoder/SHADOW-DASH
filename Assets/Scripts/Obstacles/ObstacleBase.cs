@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class ObstacleBase : MonoBehaviour
 {
     [SerializeField] public ObstacleBaseSO obstacleBaseSO;
+    [SerializeField]public double weight;
     private void Awake()
     {
     }
@@ -19,11 +20,16 @@ public abstract class ObstacleBase : MonoBehaviour
     }
     public void Move()
     {
-        transform.position += Vector3.left * EnvironmentManager.Instance.environmentSO.speedWorld * Time.fixedDeltaTime;
+        // float speed = obstacleBaseSO.runSpeed;
+        transform.position += Vector3.left * EnvironmentManager.Instance.currentSpeedWorld * Time.fixedDeltaTime;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        HandleCollision();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            HandleCollision();
+        }
     }
+
     public abstract void HandleCollision();
 }

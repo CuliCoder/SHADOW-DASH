@@ -1,0 +1,5 @@
+spawn theo preset
+kiểm tra khả năng tránh cả bộ preset nếu fail thì chuyển bộ khác
+Cooldown mỗi obstacle cũng có min, không giảm dưới ngưỡng an toàn.
+Thời gian spawn giảm theo thời gian sống nhưng có min spawn interval.
+Sau khi chết thì giảm độ khó 1 bậc trong vài giây đầu run mới

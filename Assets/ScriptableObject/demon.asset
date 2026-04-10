@@ -15,3 +15,4 @@ MonoBehaviour:
   key: demon
   prefab: {fileID: 4459603679319481605, guid: 5210fe9c1f482aa4988e69fb2e463968, type: 3}
   obstacleType: 3
+  runSpeed: 13

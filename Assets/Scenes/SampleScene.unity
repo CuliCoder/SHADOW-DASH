@@ -288,17 +288,16 @@ MonoBehaviour:
   environmentSO: {fileID: 11400000, guid: 81e2a273964963448b618750d3300ae0, type: 2}
   playerController: {fileID: 1375394053}
   obstaclePoolEntries:
-  - obstacleBaseSO: {fileID: 11400000, guid: 3ac35b6798f93a145a54e4c6647d5a04, type: 2}
-    poolSize: 10
   - obstacleBaseSO: {fileID: 11400000, guid: b972d1b2e0305f94f84f39600135e4d5, type: 2}
-    poolSize: 5
+    poolSize: 10
   - obstacleBaseSO: {fileID: 11400000, guid: e08a4c38286ce03428daa4cf2dcafec2, type: 2}
-    poolSize: 5
+    poolSize: 10
   - obstacleBaseSO: {fileID: 11400000, guid: 41a046fc1685b504689a2ec7508be273, type: 2}
-    poolSize: 5
+    poolSize: 10
   - obstacleBaseSO: {fileID: 11400000, guid: f25c9599c598b3048a25cb174b1f301d, type: 2}
-    poolSize: 5
-  spawnInterval: 2
+    poolSize: 10
+  maxSpawnInterval: 3
+  minSpawnInterval: 1.5
 --- !u!4 &513067512
 Transform:
   m_ObjectHideFlags: 0
@@ -913,7 +912,7 @@ GameObject:
   - component: {fileID: 1375394053}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -930,7 +929,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 17.354334
+  m_Mass: 11.706836
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -1044,7 +1043,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.1866492, y: 0.030259132}
+  m_Offset: {x: 0.060156345, y: 0.030259132}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1055,7 +1054,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.6538265, y: 4.749633}
+  m_Size: {x: 2.4647875, y: 4.749633}
   m_EdgeRadius: 0
 --- !u!114 &1375394053
 MonoBehaviour:

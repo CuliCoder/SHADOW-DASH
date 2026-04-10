@@ -15,3 +15,4 @@ MonoBehaviour:
   key: spike
   prefab: {fileID: 781245436960012959, guid: be1cc9c47fead9048998bd17ae3945b2, type: 3}
   obstacleType: 1
+  runSpeed: 11

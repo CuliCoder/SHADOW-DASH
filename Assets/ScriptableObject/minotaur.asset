@@ -15,3 +15,4 @@ MonoBehaviour:
   key: minotaur
   prefab: {fileID: 1879063157475679593, guid: bbbc77441dab66048b745319f26af5f9, type: 3}
   obstacleType: 0
+  runSpeed: 7

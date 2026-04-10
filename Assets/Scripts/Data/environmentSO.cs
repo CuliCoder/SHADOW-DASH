@@ -6,4 +6,6 @@ public class EnvironmentSO : ScriptableObject
     public float airResistance;
     public float posXSpawnObstacle;
     public float speedWorld;
+    public float rampDuration;
+    public float maxSpeedWorld;
 }

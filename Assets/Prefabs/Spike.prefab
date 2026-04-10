@@ -166,3 +166,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleBaseSO: {fileID: 11400000, guid: f25c9599c598b3048a25cb174b1f301d, type: 2}
+  weight: 2

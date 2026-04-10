@@ -15,3 +15,4 @@ MonoBehaviour:
   key: bat
   prefab: {fileID: 2774829499644382753, guid: fa1cd7046f866774e83fb03e0c5d6b73, type: 3}
   obstacleType: 2
+  runSpeed: 9

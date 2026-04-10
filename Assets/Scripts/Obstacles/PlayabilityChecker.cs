@@ -1,56 +1,139 @@
 using UnityEngine;
-public class PlayabilityChecker : MonoBehaviour
+public class PlayabilityChecker
 {
+    private const float MinReactionTime = 0.2f;
+    private const float MaxJumpLeadTime = 1.0f;
+    private const float SimulationStep = 0.02f;
+    private const float VerticalMargin = 0.05f;
+
     public bool CanPlayerAvoid(PlayerStateInfo playerStateInfo, float distanceToObstacle, float currentSpeed, ObstacleType obstacleType, BoxCollider2D hitboxObstacle)
     {
-        float timeToReach = distanceToObstacle / currentSpeed;
+        if (playerStateInfo.rb == null || playerStateInfo.col == null || hitboxObstacle == null || currentSpeed <= 0f)
+        {
+            return false;
+        }
+
+        float timeToReach = Mathf.Max(0f, distanceToObstacle / currentSpeed);
+        if (timeToReach < MinReactionTime)
+        {
+            return false;
+        }
+
+        Vector2 obstacleTopBottom = GetTopBottomObstacle(hitboxObstacle);
         return obstacleType switch
         {
-            ObstacleType.Low => SimulateBestJump(timeToReach, playerStateInfo).y > getTopBottomObstacle(hitboxObstacle).x,
-            ObstacleType.Spike => SimulateBestJump(timeToReach, playerStateInfo).y > getTopBottomObstacle(hitboxObstacle).x,
-            ObstacleType.High => playerStateInfo.isGrounded,
-            ObstacleType.Floating => CanJumpOverOrRunUnder(playerStateInfo, timeToReach, hitboxObstacle),
+            ObstacleType.Low => CanJumpOverWithinReactionWindow(playerStateInfo, timeToReach, obstacleTopBottom),
+            ObstacleType.Spike => CanJumpOverWithinReactionWindow(playerStateInfo, timeToReach, obstacleTopBottom),
+            ObstacleType.High => CanSlideUnder(playerStateInfo, obstacleTopBottom),
+            ObstacleType.Floating => CanJumpOverWithinReactionWindow(playerStateInfo, timeToReach, obstacleTopBottom) || CanSlideUnder(playerStateInfo, obstacleTopBottom),
             _ => true
         };
     }
-    private Vector2 SimulateBestJump(float timeToReach, PlayerStateInfo stateInfo)
+
+    private bool CanJumpOverWithinReactionWindow(PlayerStateInfo stateInfo, float timeToReach, Vector2 obstacleTopBottom)
     {
-        float vy = stateInfo.isGrounded ? stateInfo.jumpForce : stateInfo.rb.velocity.y;
+        float earliestJumpStart = Mathf.Max(0f, timeToReach - MaxJumpLeadTime);
+        float latestJumpStart = Mathf.Max(0f, timeToReach - MinReactionTime);
+
+        if (stateInfo.isSliding)
+        {
+            earliestJumpStart = Mathf.Max(earliestJumpStart, stateInfo.slideCounter);
+        }
+
+        for (float firstJumpStartTime = earliestJumpStart; firstJumpStartTime <= latestJumpStart; firstJumpStartTime += SimulationStep)
+        {
+            if (SimulateJumpAtTime(stateInfo, timeToReach, firstJumpStartTime, -1f).y > obstacleTopBottom.x + VerticalMargin)
+            {
+                return true;
+            }
+
+            for (float secondJumpStartTime = firstJumpStartTime + SimulationStep; secondJumpStartTime <= latestJumpStart; secondJumpStartTime += SimulationStep)
+            {
+                if (SimulateJumpAtTime(stateInfo, timeToReach, firstJumpStartTime, secondJumpStartTime).y > obstacleTopBottom.x + VerticalMargin)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Vector2 SimulateJumpAtTime(PlayerStateInfo stateInfo, float timeToReach, float firstJumpStartTime, float secondJumpStartTime)
+    {
         float y = stateInfo.rb.position.y;
+        float vy = stateInfo.rb.velocity.y;
         float gravity = Physics2D.gravity.y * EnvironmentManager.Instance.environmentSO.gravityScale;
         float elapsed = 0f;
-        bool usedDoubleJump = !stateInfo.canDoubleJump;
+        bool grounded = stateInfo.isGrounded;
+        bool canDoubleJump = stateInfo.canDoubleJump;
+        bool firstJumpTriggered = false;
+        bool secondJumpTriggered = false;
+
         while (elapsed < timeToReach)
         {
-            vy += gravity * Time.fixedDeltaTime;
-            y += vy * Time.fixedDeltaTime;
-            if (y <= 0f) { y = 0; vy = 0; }
-            if (!usedDoubleJump && vy < 0 && elapsed < timeToReach * 0.6f)
+            if (!firstJumpTriggered && elapsed >= firstJumpStartTime)
             {
-                usedDoubleJump = true;
-                vy = stateInfo.doubleJumpForce;
+                if (grounded)
+                {
+                    vy = stateInfo.jumpForce;
+                    grounded = false;
+                    firstJumpTriggered = true;
+                }
+                else if (canDoubleJump)
+                {
+                    vy = stateInfo.doubleJumpForce;
+                    canDoubleJump = false;
+                    firstJumpTriggered = true;
+                    secondJumpTriggered = true;
+                }
             }
+
+            if (!secondJumpTriggered && secondJumpStartTime >= 0f && elapsed >= secondJumpStartTime && !grounded && canDoubleJump)
+            {
+                vy = stateInfo.doubleJumpForce;
+                canDoubleJump = false;
+                secondJumpTriggered = true;
+                if (!firstJumpTriggered)
+                {
+                    firstJumpTriggered = true;
+                }
+            }
+
+            if (!grounded)
+            {
+                vy += gravity * Time.fixedDeltaTime;
+                y += vy * Time.fixedDeltaTime;
+            }
+
             elapsed += Time.fixedDeltaTime;
         }
-        return getTopBottomPlayer(stateInfo.col, y);
+
+        return GetTopBottomPlayer(stateInfo.col, y, stateInfo.runSize);
     }
-    private bool CanJumpOverOrRunUnder(PlayerStateInfo playerStateInfo, float timeToReach, BoxCollider2D hitboxObstacle)
+
+    private bool CanSlideUnder(PlayerStateInfo playerStateInfo, Vector2 obstacleTopBottom)
     {
-        Vector2 playerH = SimulateBestJump(timeToReach, playerStateInfo);
-        bool canOver = playerH.y > getTopBottomObstacle(hitboxObstacle).x;
-        bool canUnder = playerH.x < getTopBottomObstacle(hitboxObstacle).y;
-        return canOver || canUnder;
+        if (!playerStateInfo.isGrounded)
+        {
+            return false;
+        }
+
+        Vector2 playerSlideTopBottom = GetTopBottomPlayer(playerStateInfo.col, playerStateInfo.rb.position.y, playerStateInfo.slideSize);
+        return playerSlideTopBottom.y < obstacleTopBottom.y - VerticalMargin;
     }
-    public Vector2 getTopBottomObstacle(BoxCollider2D boxCollider2D)
+
+    public Vector2 GetTopBottomObstacle(BoxCollider2D boxCollider2D)
     {
-        float top = boxCollider2D.bounds.max.y;
-        float bottom = boxCollider2D.bounds.min.y;
+        float top = boxCollider2D.transform.position.y + boxCollider2D.offset.y + boxCollider2D.size.y / 2.0f;
+        float bottom = boxCollider2D.transform.position.y + boxCollider2D.offset.y - boxCollider2D.size.y / 2.0f;
         return new Vector2(top, bottom);
     }
-    public Vector2 getTopBottomPlayer(BoxCollider2D boxCollider2D, float posY)
+
+    public Vector2 GetTopBottomPlayer(BoxCollider2D boxCollider2D, float posY, Vector2 size)
     {
-        float top = posY + boxCollider2D.offset.y + boxCollider2D.size.y / 2.0f;
-        float bottom = posY + boxCollider2D.offset.y - boxCollider2D.size.y / 2.0f;
+        float top = posY + boxCollider2D.offset.y + size.y / 2.0f;
+        float bottom = posY + boxCollider2D.offset.y - size.y / 2.0f;
         return new Vector2(top, bottom);
     }
 }

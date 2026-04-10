@@ -30,12 +30,12 @@ public struct PlayerStateInfo
         isSliding = false;
         jumpCount = 0;
         isGrounded = true;
-        jumpForce = 23f;
-        doubleJumpForce = 17f;
-        slideTime = 0.6f;
+        jumpForce = 25f;
+        doubleJumpForce = 20f;
+        slideTime = 0.7f;
         JUMP_BUFFER = 0.5f;
         SLIDE_BUFFER = 0.1f;
-        runSize = new Vector2(3.653826f, 4.749633f);
+        runSize = new Vector2(2.464787f, 4.749633f);
         slideSize = new Vector2(3.932135f, 3.755673f);
         canDoubleJump = true;
     }
