@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7267705067136351484}
   - component: {fileID: 6907320701799564722}
   - component: {fileID: 8364858830912713573}
-  - component: {fileID: -7134720353091402862}
+  - component: {fileID: 4215614152067659670}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -153,7 +153,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.22106436, y: 0.17475954}
   m_EdgeRadius: 0
---- !u!114 &-7134720353091402862
+--- !u!114 &4215614152067659670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,8 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2774829499644382753}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cac7ccc789554343be4439c8f136300, type: 3}
+  m_Script: {fileID: 11500000, guid: d737b9dc4eb15c4418fce8256238e51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleBaseSO: {fileID: 11400000, guid: 41a046fc1685b504689a2ec7508be273, type: 2}
-  weight: 3

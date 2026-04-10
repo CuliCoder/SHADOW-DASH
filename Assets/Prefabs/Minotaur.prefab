@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7074796960046535840}
   - component: {fileID: 9113956238215088731}
   - component: {fileID: 4228741341544440185}
-  - component: {fileID: -5703620702368071276}
+  - component: {fileID: 8740012621483273523}
   m_Layer: 0
   m_Name: Minotaur
   m_TagString: Untagged
@@ -153,7 +153,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.37123066, y: 0.42789248}
   m_EdgeRadius: 0
---- !u!114 &-5703620702368071276
+--- !u!114 &8740012621483273523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,8 +162,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1879063157475679593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272b694c5adbdd3489d76244469a9327, type: 3}
+  m_Script: {fileID: 11500000, guid: d737b9dc4eb15c4418fce8256238e51d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleBaseSO: {fileID: 11400000, guid: b972d1b2e0305f94f84f39600135e4d5, type: 2}
-  weight: 4

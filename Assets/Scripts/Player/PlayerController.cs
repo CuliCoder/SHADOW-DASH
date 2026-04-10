@@ -2,69 +2,82 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateInfo stateInfo;
+
     private void Awake()
     {
         stateInfo = new PlayerStateInfo(GetComponent<Rigidbody2D>(), GetComponent<BoxCollider2D>());
     }
+
     private void Start()
     {
         stateInfo.col.size = stateInfo.runSize;
     }
+
     private void FixedUpdate()
     {
-        ApplyBetterHall();
-        slide();
+        ApplyBetterFall();
+        UpdateSlide();
     }
+
     private void ApplySlide()
     {
         if (InputManager.Instance.IsSlidePressed() && stateInfo.isGrounded)
         {
-            startSlide();
+            StartSlide();
         }
     }
-    private void ApplyBetterHall()
+
+    private void ApplyBetterFall()
     {
         stateInfo.rb.velocity += Vector2.up * Physics2D.gravity.y * EnvironmentManager.Instance.environmentSO.gravityScale * Time.fixedDeltaTime;
     }
+
     private void Update()
     {
         ApplyJump();
-        jumpBuffer();
+        UpdateJumpBuffer();
         ApplySlide();
-        slideBuffer();
+        UpdateSlideBuffer();
     }
+
     private void ApplyJump()
     {
         if (!InputManager.Instance.IsJumpPressed()) return;
         if (stateInfo.jumpCount >= 2) return;
         Jump();
     }
+
     private void Jump()
     {
         if (stateInfo.isSliding) return;
+
         stateInfo.jumpCount++;
         if (stateInfo.jumpCount >= 2)
         {
             stateInfo.canDoubleJump = false;
         }
+
         if (stateInfo.isGrounded)
         {
             stateInfo.isGrounded = false;
             stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.jumpForce);
             return;
         }
+
         stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.doubleJumpForce);
     }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "ground")
+        if (collision.gameObject.CompareTag("ground"))
         {
             stateInfo.isGrounded = true;
             stateInfo.jumpCount = 0;
             stateInfo.canDoubleJump = true;
         }
     }
-    private void jumpBuffer()
+
+    private void UpdateJumpBuffer()
     {
         if (InputManager.Instance.IsJumpPressed())
         {
@@ -80,7 +93,8 @@ public class PlayerController : MonoBehaviour
             stateInfo.jumpBufferCounter = 0f;
         }
     }
-    private void slideBuffer()
+
+    private void UpdateSlideBuffer()
     {
         if (InputManager.Instance.IsSlidePressed())
         {
@@ -92,11 +106,12 @@ public class PlayerController : MonoBehaviour
         }
         if (stateInfo.slideBufferCounter > 0f && stateInfo.isGrounded)
         {
-            startSlide();
+            StartSlide();
             stateInfo.slideBufferCounter = 0f;
         }
     }
-    private void slide()
+
+    private void UpdateSlide()
     {
         if (stateInfo.isSliding)
         {
@@ -109,9 +124,11 @@ public class PlayerController : MonoBehaviour
             stateInfo.col.size = stateInfo.runSize;
         }
     }
-    private void startSlide()
+
+    private void StartSlide()
     {
         if (stateInfo.isSliding) return;
+
         stateInfo.isSliding = true;
         stateInfo.slideCounter = stateInfo.slideTime;
     }

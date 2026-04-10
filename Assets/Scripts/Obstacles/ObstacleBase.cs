@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class ObstacleBase : MonoBehaviour
 {
     [SerializeField] public ObstacleBaseSO obstacleBaseSO;
-    [SerializeField]public double weight;
     private void Awake()
     {
     }

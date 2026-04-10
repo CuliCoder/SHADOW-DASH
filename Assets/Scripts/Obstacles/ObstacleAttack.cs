@@ -1,4 +1,4 @@
-public class Minotaur: ObstacleBase
+public class ObstacleAttack: ObstacleBase
 {
     public override void HandleCollision()
     {
