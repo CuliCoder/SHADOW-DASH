@@ -43,9 +43,11 @@ public class LevelManager : MonoBehaviour
 
         Instance = this;
         BuildRuntimeLevelInfos();
+    }
+    private void Start()
+    {
         SetLevel(currentLevel);
     }
-
     public void SetLevel(levels level)
     {
         if (currentLevel == level && CurrentLevelInfo != null && CurrentLevelInfo.Count > 0)
@@ -54,6 +56,7 @@ public class LevelManager : MonoBehaviour
         }
 
         currentLevel = level;
+        ParallaxController.Instance.changeMap(currentLevel);
         if (!runtimeLevelInfos.TryGetValue(currentLevel, out var info))
         {
             CurrentLevelInfo = new List<(ObstacleType, double)>();

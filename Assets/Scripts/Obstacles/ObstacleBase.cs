@@ -3,8 +3,10 @@ using UnityEngine;
 public abstract class ObstacleBase : MonoBehaviour
 {
     [SerializeField] public ObstacleBaseSO obstacleBaseSO;
+    private Animator animator;
     private void Awake()
     {
+        animator = GetComponent<Animator>();
     }
     private void FixedUpdate()
     {
@@ -26,9 +28,15 @@ public abstract class ObstacleBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            HandleCollision();
+            HandleCollision(other.gameObject);
         }
     }
-
-    public abstract void HandleCollision();
+    public void PlayAnimation(string animationName)
+    {
+        if (animator != null)
+        {
+            animator.Play(animationName);
+        }
+    }
+    public abstract void HandleCollision(GameObject player);
 }
