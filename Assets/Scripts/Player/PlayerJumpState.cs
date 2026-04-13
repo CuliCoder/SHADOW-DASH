@@ -11,6 +11,11 @@ public class PlayerJumpState : PlayerState
     }
     public override void Update()
     {
+        if(stateManager.playerController.stateInfo.isDead)
+        {
+            stateManager.changeState(stateManager.deadState);
+            return;
+        }
         if (stateManager.playerController.stateInfo.rb.velocity.y > 0)
         {
             playAnimation("jump_start");

@@ -19,6 +19,10 @@ public class PlayerRunState : PlayerState
         {
             stateManager.changeState(stateManager.slideState);
         }
+        else if (stateManager.playerController.stateInfo.isDead)
+        {
+            stateManager.changeState(stateManager.deadState);
+        }
     }
     public override void Exit()
     {

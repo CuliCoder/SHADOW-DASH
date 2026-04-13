@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ground
   - coin
+  - obstacle
   layers:
   - Default
   - TransparentFX
@@ -48,4 +49,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 884972179
+    locked: 0
+  - name: ground
+    uniqueID: 956999623
     locked: 0

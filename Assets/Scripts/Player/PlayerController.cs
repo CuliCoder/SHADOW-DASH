@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (stateInfo.isDead) return;
         ApplyJump();
         UpdateJumpBuffer();
         ApplySlide();
@@ -74,6 +76,13 @@ public class PlayerController : MonoBehaviour
             stateInfo.isGrounded = true;
             stateInfo.jumpCount = 0;
             stateInfo.canDoubleJump = true;
+        }
+    }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("obstacle"))
+        {
+            StartCoroutine(TransitionPlayerWhenDie());
         }
     }
 
@@ -131,5 +140,30 @@ public class PlayerController : MonoBehaviour
 
         stateInfo.isSliding = true;
         stateInfo.slideCounter = stateInfo.slideTime;
+    }
+    public IEnumerator TransitionPlayerWhenDie()
+    {
+        ScoreManager.Instance.Pause(null);
+        stateInfo.isDead = true;
+        while (transform.position.y > stateInfo.originPositionY)
+        {
+            transform.position += Vector3.down * 10f * Time.unscaledDeltaTime;
+            yield return null;
+        }
+        ResetState();
+        yield return new WaitForSecondsRealtime(1.5f);
+        ScoreManager.Instance.enableMenuPause();
+    }
+    private void ResetState()
+    {
+        stateInfo.isGrounded = true;
+        stateInfo.canDoubleJump = true;
+        stateInfo.jumpCount = 0;
+        stateInfo.isSliding = false;
+        stateInfo.slideCounter = 0f;
+        stateInfo.col.size = stateInfo.runSize;
+        stateInfo.rb.velocity = Vector2.zero;
+        stateInfo.jumpBufferCounter = 0f;
+        stateInfo.slideBufferCounter = 0f;
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 527aee2abd7226749acd75ee8255cc6a
+guid: ec4ac7faa3b1287418219179d55e5abb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bite_0
+      name: IDLE_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 44
-        height: 92
+        y: 5
+        width: 79
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,41 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee032e017233b514597ab3e02465a511
-      internalID: 1215667466
+      spriteID: f76c3525e87d8bc4a8693c3adafa025b
+      internalID: -1879299302
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bite_1
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 0
-        width: 44
-        height: 92
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 49b6bb2646edd66468ae77672ef542da
-      internalID: -1912737716
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bite_2
+      name: IDLE_1
       rect:
         serializedVersion: 2
         x: 88
-        y: 0
-        width: 44
-        height: 92
+        y: 2
+        width: 61
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0e481426468d6543986d1f325bafd1f
-      internalID: 787389346
+      spriteID: 73bcbb00101d12b4cb89cd3aede85d00
+      internalID: 1647611064
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bite_3
+      name: IDLE_2
       rect:
         serializedVersion: 2
-        x: 132
-        y: 0
-        width: 44
-        height: 92
+        x: 165
+        y: 6
+        width: 66
+        height: 58
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a2a5135af01f8484bafa34c18ec60f00
-      internalID: -88618222
+      spriteID: 3c9d0c08d1337f04a9d6cdd8cfe3618d
+      internalID: -746313100
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bite_4
+      name: IDLE_3
       rect:
         serializedVersion: 2
-        x: 176
-        y: 0
-        width: 44
-        height: 92
+        x: 244
+        y: 6
+        width: 65
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,71 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5e96453603aace44ca7327b7ba914629
-      internalID: 961484054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bite_5
-      rect:
-        serializedVersion: 2
-        x: 220
-        y: 0
-        width: 44
-        height: 92
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a9de12e6bd318554a9a86cc1d8498a88
-      internalID: 548622254
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bite_6
-      rect:
-        serializedVersion: 2
-        x: 264
-        y: 0
-        width: 44
-        height: 92
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ff3ea4152bbcc504db0786c3d0e860f7
-      internalID: -1752942019
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bite_7
-      rect:
-        serializedVersion: 2
-        x: 308
-        y: 0
-        width: 44
-        height: 92
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e5970cff4852a474a89d34d1d7a5ef13
-      internalID: 843132141
+      spriteID: e0fbb00fb6a6970459656477f5874761
+      internalID: 783985251
       vertices: []
       indices: 
       edges: []
@@ -275,14 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      bite_0: 1215667466
-      bite_1: -1912737716
-      bite_2: 787389346
-      bite_3: -88618222
-      bite_4: 961484054
-      bite_5: 548622254
-      bite_6: -1752942019
-      bite_7: 843132141
+      IDLE_0: -1879299302
+      IDLE_1: 1647611064
+      IDLE_2: -746313100
+      IDLE_3: 783985251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections;
 public enum levels
 {
     normal,
@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
 
     private readonly Dictionary<levels, List<(ObstacleType, double)>> runtimeLevelInfos = new();
     private levels currentLevel = levels.normal;
-
+    private bool isLevelReduced = false;
     public List<(ObstacleType, double)> CurrentLevelInfo { get; private set; } = new();
 
     private void Awake()
@@ -74,6 +74,10 @@ public class LevelManager : MonoBehaviour
 
     private void ChangeLevelByTime()
     {
+        if (currentLevel == levels.hard || isLevelReduced)
+        {
+            return;
+        }
         float timeCounter = EnvironmentManager.Instance.timeCounter;
 
         if (timeCounter < 30f)
@@ -125,5 +129,31 @@ public class LevelManager : MonoBehaviour
         }
 
         return CurrentLevelInfo;
+    }
+    public void ReduceLevel()
+    {
+        isLevelReduced = true;
+        switch (currentLevel)
+        {
+            case levels.normal:
+                SetLevel(levels.normal);
+                break;
+            case levels.mid:
+                SetLevel(levels.normal);
+                break;
+            case levels.hard:
+                SetLevel(levels.mid);
+                break;
+            default:
+                Debug.LogError($"Unknown level: {currentLevel}");
+                break;
+        }
+
+    }
+    public IEnumerator TransitionLevelWhenDie()
+    {
+        ReduceLevel();
+        yield return new WaitForSeconds(10f);
+        isLevelReduced = false;
     }
 }

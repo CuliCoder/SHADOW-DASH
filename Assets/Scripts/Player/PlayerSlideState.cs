@@ -11,6 +11,11 @@ public class PlayerSlideState : PlayerState
     }
     public override void Update()
     {
+        if (stateManager.playerController.stateInfo.isDead)
+        {
+            stateManager.changeState(stateManager.deadState);
+            return;
+        }
         if (!stateManager.playerController.stateInfo.isSliding)
         {
             stateManager.changeState(stateManager.runState);

@@ -7,6 +7,7 @@ public class PlayerStateManager : MonoBehaviour
     public PlayerJumpState jumpState { get; private set; }
     public PlayerRunState runState { get; private set; }
     public PlayerSlideState slideState { get; private set; }
+    public PlayerDeadState deadState { get; private set; }
     public IState currentState { get; private set; }
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class PlayerStateManager : MonoBehaviour
         jumpState = new PlayerJumpState(this, animator);
         runState = new PlayerRunState(this, animator);
         slideState = new PlayerSlideState(this, animator);
+        deadState = new PlayerDeadState(this, animator);
     }
     private void Start()
     {

@@ -183,4 +183,8 @@ public class ParallaxController : MonoBehaviour
     {
         isStopping = true;
     }
+    public void resumeRunningParallax()
+    {
+        isStopping = false;
+    }
 }

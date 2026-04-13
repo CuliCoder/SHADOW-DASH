@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class ObstacleBase : MonoBehaviour
 {
     [SerializeField] public ObstacleBaseSO obstacleBaseSO;
-    private Animator animator;
+    public Animator animator { get; private set; }
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -33,7 +33,7 @@ public abstract class ObstacleBase : MonoBehaviour
     }
     public void PlayAnimation(string animationName)
     {
-        if (animator != null)
+        if (animator != null && animator.HasState(0, Animator.StringToHash(animationName)))
         {
             animator.Play(animationName);
         }

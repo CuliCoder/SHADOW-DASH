@@ -19,6 +19,8 @@ public struct PlayerStateInfo
     public float slideCounter;
     public bool isSliding;
     public bool canDoubleJump;
+    public float originPositionY;
+    public bool isDead;
     public PlayerStateInfo(Rigidbody2D rb, BoxCollider2D col)
     {
         this.rb = rb;
@@ -38,5 +40,7 @@ public struct PlayerStateInfo
         runSize = new Vector2(2.464787f, 4.749633f);
         slideSize = new Vector2(3.932135f, 3.755673f);
         canDoubleJump = true;
+        originPositionY = -10.24046f;
+        isDead = false;
     }
 }
