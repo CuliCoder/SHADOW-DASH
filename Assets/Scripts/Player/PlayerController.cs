@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
         }
         ResetState();
         yield return new WaitForSecondsRealtime(1.5f);
-        ScoreManager.Instance.enableMenuPause();
+        ScoreManager.Instance.enableMenuGameOver();
     }
     private void ResetState()
     {

@@ -1,14 +1,19 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class ScoreManager : MonoBehaviour
 {
+    private const string HighScoreKey = "HIGH_SCORE";
+
     public static ScoreManager Instance { get; private set; }
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject menuPause;
+    [SerializeField] private GameObject menuGameOver;
     private float scoreRate = 0.5f;
     public float currentScoreRate { get; private set; }
     public long currentScore { get; private set; }
+    public long highScore { get; private set; }
     private int nextMilestone = 10;
     private float rawScore;
 
@@ -28,6 +33,7 @@ public class ScoreManager : MonoBehaviour
         currentScore = 0;
         rawScore = 0f;
         currentScoreRate = 1;
+        highScore = LoadHighScore();
         textMeshPro.text = currentScore.ToString();
     }
 
@@ -67,9 +73,9 @@ public class ScoreManager : MonoBehaviour
     {
         menuPause.SetActive(false);
     }
-    public void ResumeGame()
+    public void ResumeGameWhenGameOver()
     {
-        disableMenuPause();
+        disableMenuGameOver();
         Resume(ResetState);
     }
     private void ResetState()
@@ -78,5 +84,60 @@ public class ScoreManager : MonoBehaviour
         playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.stateInfo.originPositionY, playerController.transform.position.z);
         ParallaxController.Instance.resumeRunningParallax();
         LevelManager.Instance.ReduceLevel();
+    }
+    public void ResumeGame()
+    {
+        Resume(disableMenuPause);
+    }
+    public void PauseGame()
+    {
+        Pause(enableMenuPause);
+    }
+    public void disableMenuGameOver()
+    {
+        menuGameOver.SetActive(false);
+    }
+    public void enableMenuGameOver()
+    {
+        SaveHighScoreIfNeeded();
+        menuGameOver.SetActive(true);
+    }
+
+    public void SaveHighScoreIfNeeded()
+    {
+        if (currentScore <= highScore)
+        {
+            return;
+        }
+
+        highScore = currentScore;
+        PlayerPrefs.SetString(HighScoreKey, highScore.ToString());
+        PlayerPrefs.Save();
+    }
+
+    public long LoadHighScore()
+    {
+        string savedValue = PlayerPrefs.GetString(HighScoreKey, "0");
+        if (long.TryParse(savedValue, out long parsedScore))
+        {
+            highScore = parsedScore;
+            return parsedScore;
+        }
+
+        highScore = 0;
+        return 0;
+    }
+
+    public void ResetSavedHighScore()
+    {
+        PlayerPrefs.DeleteKey(HighScoreKey);
+        PlayerPrefs.Save();
+        highScore = 0;
+    }
+    
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 }

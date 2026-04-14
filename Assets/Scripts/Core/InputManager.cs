@@ -12,7 +12,6 @@ public class InputManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
     public bool IsJumpPressed()

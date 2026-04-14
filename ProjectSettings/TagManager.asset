@@ -47,9 +47,18 @@ TagManager:
   - name: Background
     uniqueID: 1871978073
     locked: 0
-  - name: UI
-    uniqueID: 884972179
-    locked: 0
   - name: ground
     uniqueID: 956999623
+    locked: 0
+  - name: vfx1
+    uniqueID: 3435262987
+    locked: 0
+  - name: vfx2
+    uniqueID: 2714261141
+    locked: 0
+  - name: player
+    uniqueID: 1262045463
+    locked: 0
+  - name: UI
+    uniqueID: 884972179
     locked: 0
