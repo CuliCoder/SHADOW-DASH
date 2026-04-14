@@ -50,6 +50,24 @@ public class PoolManager : MonoBehaviour
         objtoSpawn.SetActive(true);
         return objtoSpawn;
     }
+    public GameObject SpawnPool(string key, Vector2 position, Quaternion rot)
+    {
+        if (!poolDictionary.ContainsKey(key))
+        {
+            Debug.LogWarning($"not found {key} in pool dictionary");
+            return null;
+        }
+        Queue<GameObject> pools = poolDictionary[key];
+        if (pools.Count == 0)
+        {
+            Debug.LogWarning($"{key} sold out");
+            return null;
+        }
+        GameObject objtoSpawn = pools.Dequeue();
+        objtoSpawn.transform.SetPositionAndRotation(position, rot);
+        objtoSpawn.SetActive(true);
+        return objtoSpawn;
+    }
     public void Despawn(string key, GameObject gameObject)
     {
         if (!poolDictionary.ContainsKey(key))

@@ -27,11 +27,12 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get; private set; }
 
     [SerializeField] private List<LevelInfoEntry> levelInfos;
-
+    [SerializeField] private GameObject vfx1;
+    [SerializeField] private GameObject vfx2;
     private readonly Dictionary<levels, List<(ObstacleType, double)>> runtimeLevelInfos = new();
     private levels currentLevel = levels.normal;
-    private bool isLevelReduced = false;
     public List<(ObstacleType, double)> CurrentLevelInfo { get; private set; } = new();
+    private Coroutine levelChangeCoroutine;
 
     private void Awake()
     {
@@ -54,7 +55,6 @@ public class LevelManager : MonoBehaviour
         {
             return;
         }
-
         currentLevel = level;
         ParallaxController.Instance.changeMap(currentLevel);
         if (!runtimeLevelInfos.TryGetValue(currentLevel, out var info))
@@ -65,32 +65,53 @@ public class LevelManager : MonoBehaviour
         }
 
         CurrentLevelInfo = info;
-    }
-
-    private void Update()
-    {
-        ChangeLevelByTime();
-    }
-
-    private void ChangeLevelByTime()
-    {
-        if (currentLevel == levels.hard || isLevelReduced)
+        if (levelChangeCoroutine != null)
         {
-            return;
+            StopCoroutine(levelChangeCoroutine);
         }
-        float timeCounter = EnvironmentManager.Instance.timeCounter;
-
-        if (timeCounter < 30f)
+        levelChangeCoroutine = StartCoroutine(ChangeLevelByTime());
+        changeVFX();
+    }
+    private void changeVFX()
+    {
+        if(currentLevel == levels.mid)
         {
-            SetLevel(levels.normal);
+            vfx1.SetActive(true);
+            vfx2.SetActive(false);
         }
-        else if (timeCounter < 60f)
+        else if(currentLevel == levels.hard)
         {
-            SetLevel(levels.mid);
+            vfx1.SetActive(true);
+            vfx2.SetActive(true);
         }
         else
         {
-            SetLevel(levels.hard);
+            vfx1.SetActive(false);
+            vfx2.SetActive(false);
+        }
+    }
+    private void Update()
+    {
+    }
+
+    private IEnumerator ChangeLevelByTime()
+    {
+        if (currentLevel != levels.hard)
+        {
+            switch (currentLevel)
+            {
+                case levels.normal:
+                    yield return new WaitForSeconds(30f);
+                    SetLevel(levels.mid);
+                    break;
+                case levels.mid:
+                    yield return new WaitForSeconds(30f);
+                    SetLevel(levels.hard);
+                    break;
+                default:
+                    Debug.LogError($"Unknown level: {currentLevel}");
+                    break;
+            }
         }
     }
 
@@ -132,7 +153,6 @@ public class LevelManager : MonoBehaviour
     }
     public void ReduceLevel()
     {
-        isLevelReduced = true;
         switch (currentLevel)
         {
             case levels.normal:
@@ -148,12 +168,5 @@ public class LevelManager : MonoBehaviour
                 Debug.LogError($"Unknown level: {currentLevel}");
                 break;
         }
-
-    }
-    public IEnumerator TransitionLevelWhenDie()
-    {
-        ReduceLevel();
-        yield return new WaitForSeconds(10f);
-        isLevelReduced = false;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public PlayerStateInfo stateInfo;
-
+    [SerializeField] private GameObject prefabJumpEffect;
     private void Awake()
     {
         stateInfo = new PlayerStateInfo(GetComponent<Rigidbody2D>(), GetComponent<BoxCollider2D>());
@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         stateInfo.col.size = stateInfo.runSize;
+        PoolManager.Instance.prewarmPool("JumpEffect", prefabJumpEffect, 5);
     }
 
     private void FixedUpdate()
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
         {
             stateInfo.canDoubleJump = false;
         }
-
+        PoolManager.Instance.SpawnPool("JumpEffect", new Vector2(transform.position.x, transform.position.y - 1.58f), Quaternion.identity);
         if (stateInfo.isGrounded)
         {
             stateInfo.isGrounded = false;

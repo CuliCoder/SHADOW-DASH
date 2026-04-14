@@ -144,7 +144,7 @@ public class ParallaxController : MonoBehaviour
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
             oldBackground.transform.position = Vector3.Lerp(oldStart, oldEnd, t);
             newBackground.transform.position = Vector3.Lerp(newStart, newEnd, t);

@@ -77,6 +77,6 @@ public class ScoreManager : MonoBehaviour
         playerController.stateInfo.isDead = false;
         playerController.transform.position = new Vector3(playerController.transform.position.x, playerController.stateInfo.originPositionY, playerController.transform.position.z);
         ParallaxController.Instance.resumeRunningParallax();
-        StartCoroutine(LevelManager.Instance.TransitionLevelWhenDie());
+        LevelManager.Instance.ReduceLevel();
     }
 }
