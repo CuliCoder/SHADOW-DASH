@@ -14,14 +14,21 @@ public class PoolManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
     public void prewarmPool(string key, GameObject prefab, int poolSize)
     {
+        if (prefab == null)
+        {
+            Debug.LogWarning($"Cannot prewarm pool '{key}' because prefab is null.");
+            return;
+        }
+
         if (!poolDictionary.ContainsKey(key))
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i <= poolSize; i++)
+            for (int i = 0; i < poolSize; i++)
             {
                 GameObject gameObject = Instantiate(prefab);
                 gameObject.SetActive(false);
@@ -75,6 +82,12 @@ public class PoolManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        if (gameObject == null)
+        {
+            return;
+        }
+
         gameObject.SetActive(false);
         poolDictionary[key].Enqueue(gameObject);
     }

@@ -11,6 +11,7 @@ public class EnvironmentManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
         else
         {

@@ -4,6 +4,8 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerStateInfo stateInfo;
     [SerializeField] private GameObject prefabJumpEffect;
+    [SerializeField] private AudioClip jumpSound1;
+    [SerializeField] private AudioClip jumpSound2;
     private void Awake()
     {
         stateInfo = new PlayerStateInfo(GetComponent<Rigidbody2D>(), GetComponent<BoxCollider2D>());
@@ -62,11 +64,12 @@ public class PlayerController : MonoBehaviour
         PoolManager.Instance.SpawnPool("JumpEffect", new Vector2(transform.position.x, transform.position.y - 1.58f), Quaternion.identity);
         if (stateInfo.isGrounded)
         {
+            AudioManager.Instance.PlaySound(jumpSound1);
             stateInfo.isGrounded = false;
             stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.jumpForce);
             return;
         }
-
+        AudioManager.Instance.PlaySound(jumpSound2);
         stateInfo.rb.velocity = new Vector2(stateInfo.rb.velocity.x, stateInfo.doubleJumpForce);
     }
 
@@ -79,12 +82,9 @@ public class PlayerController : MonoBehaviour
             stateInfo.canDoubleJump = true;
         }
     }
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void whenDie()
     {
-        if (collision.gameObject.CompareTag("obstacle"))
-        {
-            StartCoroutine(TransitionPlayerWhenDie());
-        }
+        StartCoroutine(TransitionPlayerWhenDie());
     }
 
     private void UpdateJumpBuffer()

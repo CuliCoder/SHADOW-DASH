@@ -1,21 +1,22 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class ScoreManager : MonoBehaviour
 {
-    private const string HighScoreKey = "HIGH_SCORE";
-
     public static ScoreManager Instance { get; private set; }
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject menuPause;
     [SerializeField] private GameObject menuGameOver;
+    [SerializeField] private GameObject recordVFX;
+    [SerializeField] private TextMeshProUGUI newRecordText;
     private float scoreRate = 0.5f;
     public float currentScoreRate { get; private set; }
     public long currentScore { get; private set; }
     public long highScore { get; private set; }
     private int nextMilestone = 10;
     private float rawScore;
+    private Coroutine recordVFXCoroutine;
 
     [SerializeField] private TextMeshProUGUI textMeshPro;
 
@@ -24,6 +25,7 @@ public class ScoreManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
         else
         {
@@ -36,10 +38,11 @@ public class ScoreManager : MonoBehaviour
         highScore = LoadHighScore();
         textMeshPro.text = currentScore.ToString();
     }
-
+    
     private void Update()
     {
         UpdateScore();
+
     }
 
     public void UpdateScore()
@@ -109,15 +112,21 @@ public class ScoreManager : MonoBehaviour
         {
             return;
         }
-
+        newRecordText.text = currentScore.ToString();
+        if (recordVFXCoroutine != null)
+        {
+            StopCoroutine(recordVFXCoroutine);
+        }
+        recordVFX.SetActive(true);
+        recordVFXCoroutine = StartCoroutine(waitRecordVFX());
         highScore = currentScore;
-        PlayerPrefs.SetString(HighScoreKey, highScore.ToString());
+        PlayerPrefs.SetString(GamePrefs.HighScoreKey, highScore.ToString());
         PlayerPrefs.Save();
     }
 
     public long LoadHighScore()
     {
-        string savedValue = PlayerPrefs.GetString(HighScoreKey, "0");
+        string savedValue = PlayerPrefs.GetString(GamePrefs.HighScoreKey, "0");
         if (long.TryParse(savedValue, out long parsedScore))
         {
             highScore = parsedScore;
@@ -130,14 +139,19 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetSavedHighScore()
     {
-        PlayerPrefs.DeleteKey(HighScoreKey);
+        PlayerPrefs.DeleteKey(GamePrefs.HighScoreKey);
         PlayerPrefs.Save();
         highScore = 0;
     }
-    
+
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        SceneTransition.Instance.LoadScene("MainMenu", SceneTransition.TransitionState.End);
+    }
+    private IEnumerator waitRecordVFX()
+    {
+        yield return new WaitForSeconds(1.1f);
+        recordVFX.SetActive(false);
     }
 }

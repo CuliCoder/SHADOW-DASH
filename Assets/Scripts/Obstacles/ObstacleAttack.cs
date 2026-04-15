@@ -1,11 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class ObstacleAttack: ObstacleBase
+public class ObstacleAttack : ObstacleBase
 {
+    public bool Attacked = false;
+    private void OnEnable()
+    {
+        Attacked = false;
+    }
     public override void HandleCollision(GameObject player)
     {
-        // PoolManager.Instance.Despawn(base.obstacleBaseSO.key, gameObject);
+        if (Attacked) return;
+        Attacked = true;
+        player.GetComponent<PlayerController>().whenDie();
         ParallaxController.Instance.stopRunningParallax();
         PlayAnimation("attack");
         StartCoroutine(waitAttackAnimation());

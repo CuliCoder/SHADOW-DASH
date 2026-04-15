@@ -15,7 +15,7 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private float maxSpawnInterval = 3.0f; // Lúc mới chơi, 3s ra 1 chướng ngại vật
     [SerializeField] private float minSpawnInterval = 2.5f; // Mức khó nhất, 2.5s ra 1 cái
 
-    [Tooltip("Thời gian (giây) để đạt đến mức khó nhất (Min Interval)")]
+    [SerializeField, Tooltip("Thời gian (giây) để đạt đến mức khó nhất (Min Interval)")]
     private float timeToMaxDifficulty = 60f;
     private float distanceToObstacle;
     private float Spawn_interval_low = 2f;
@@ -37,6 +37,13 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (environmentSO == null || playerController == null)
+        {
+            Debug.LogError("ObstacleSpawner is missing required references.");
+            enabled = false;
+            return;
+        }
+
         weightRandom = new WeightRandom<ObstacleType>(new List<(ObstacleType, double)>());
         spawnTimer = maxSpawnInterval;
 
