@@ -3,6 +3,7 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
+    [SerializeField] private GameObject instructionsPanel;
     private void Start()
     {
         string savedValue = PlayerPrefs.GetString(GamePrefs.HighScoreKey, "0");
@@ -15,5 +16,13 @@ public class MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void enableInstructions()
+    {
+        instructionsPanel.SetActive(true);
+    }
+    public void disableInstructions()
+    {
+        instructionsPanel.SetActive(false);
     }
 }
